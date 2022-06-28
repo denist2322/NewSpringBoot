@@ -19,7 +19,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doadd")
 	@ResponseBody
-	public ResultData doAdd(String title, String body) {
+	public ResultData<Article> doAdd(String title, String body) {
 		if(Ut.empty(title)) {
 			return ResultData.from("F-1", "title(을)를 입력하세요.");
 		}
@@ -34,7 +34,7 @@ public class UsrArticleController {
 		
 		Article article = articleService.getArticle(id);
 				
-		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(),article);
+		return ResultData.newData(writeArticleRd,article);
 	}
 
 	
