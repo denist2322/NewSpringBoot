@@ -16,11 +16,33 @@ import com.example.demo.vo.ResultData;
 public class UsrArticleController {
 	@Autowired
 	private ArticleService articleService;
+	
+	@RequestMapping("/usr/article/doadd")
+	@ResponseBody
+	public ResultData doAdd(String title, String body) {
+		if(Ut.empty(title)) {
+			return ResultData.from("F-1", "title(을)를 입력하세요.");
+		}
+		
+		if(Ut.empty(body)) {
+			return ResultData.from("F-1", "body(을)를 입력하세요.");
+		}
+		
+		
+		ResultData writeArticleRd = articleService.writeArticle(title, body);
+		int id = (int)writeArticleRd.getData1();
+		Article article = articleService.getArticle(id);
+				
+		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(),article);
+	}
 
+	
+	
 	@RequestMapping("/usr/article/getarticles")
 	@ResponseBody
-	public List<Article> getArticles() {
-		return articleService.getArticles();
+	public ResultData getArticles() {
+		List<Article> article = articleService.getArticles();
+		return ResultData.from("S-1", "게시물 리스트 입니다.",article);
 	}
 
 	@RequestMapping("/usr/article/getarticle")
@@ -31,7 +53,7 @@ public class UsrArticleController {
 		if(article == null) {	
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
-		return article;
+		return ResultData.from("S-1", Ut.f("%d번 게시물입니다.", id), article);
 	}
 
 	@RequestMapping("/usr/article/doremove")
