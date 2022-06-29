@@ -3,10 +3,10 @@
 
 <mapper namespace="com.example.demo.repository.ArticleRepository">
 	<insert id="writeArticle">
-		INSERT INTO article SET
-		regDate = NOW(),
-		updateDate =
-		NOW(),
+		INSERT INTO article
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{memberId},
 		title = #{title},
 		`body` = #{body}
 	</insert>
